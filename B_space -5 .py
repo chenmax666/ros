@@ -22,8 +22,8 @@ base_angle = 90.0
 
 # 距离触发阈值配置（保留核心阈值）
 DISTANCE_THRESHOLDS = {
-   "zero": 0.00, "first": 3.0, "second": 7.0, "third": 20.9,                      #first 3.0
-    "fourth": 21.9, "fifth": 24.0, "sixth": 30.2, "lap_total": 34.8, "traffic_light": 26.5,#第二圈红绿灯 28.5+36=64.5
+   "zero": 0.00, "first": 3.0, "second": 7.0, "third": 19.7,                      #first 3.0
+    "fourth": 21.9, "fifth": 24.0, "sixth": 26.2, "lap_total": 34.8, "traffic_light": 26.5,#第二圈红绿灯 28.5+36=64.5
     "second_lap_pre_stop": 66.3, "second_lap_stop": 67.3  # 第二圈终点停车阈值
 }
 
@@ -31,17 +31,17 @@ DISTANCE_THRESHOLDS = {
 # 这是初始估值；现场里程计起点/轮径误差会使入口距离略有偏差。
 YELLOW_TAPE_START_M = 7.0
 YELLOW_TAPE_APPROACH_M = 0.30         # 提前接管成直行，躲开"锥桶已消失"的空档（新增）
-YELLOW_TAPE_LEG_LENGTH_M = 3.0            #2.5
+YELLOW_TAPE_LEG_LENGTH_M = 3.15            #2.5
 YELLOW_TAPE_LENGTH_M = 2 * YELLOW_TAPE_LEG_LENGTH_M
-YELLOW_TAPE_SPEED_MPS = 0.2
-YELLOW_TAPE_REF_SPEED = 0.2           # 角度就是按这个车速调的；以后改车速会自动保持曲率
+YELLOW_TAPE_SPEED_MPS = 0.42
+YELLOW_TAPE_REF_SPEED = 0.42           # 角度就是按这个车速调的；以后改车速会自动保持曲率
 YELLOW_TAPE_ENTRY_TURN_END_M = 1.0
-YELLOW_TAPE_APEX_TURN_START_M = 4.00
-YELLOW_TAPE_APEX_TURN_END_M = 4.80
-YELLOW_TAPE_EXIT_TURN_START_M = 5.0
-YELLOW_TAPE_ENTRY_ANGLE = 107.0  # 轻微左转，约 +0.138
-YELLOW_TAPE_APEX_ANGLE = 80.0   # V形折点右转，约 -0.160
-YELLOW_TAPE_EXIT_ANGLE = 96.2   # 回到上边直道，轻微左转
+YELLOW_TAPE_APEX_TURN_START_M = 2.30            #3.5
+YELLOW_TAPE_APEX_TURN_END_M = 4.30
+YELLOW_TAPE_EXIT_TURN_START_M = 5.20
+YELLOW_TAPE_ENTRY_ANGLE = 109.0 # 轻微左转，约 +0.138
+YELLOW_TAPE_APEX_ANGLE = 81.0  # V形折点右转，约 -0.160
+YELLOW_TAPE_EXIT_ANGLE = 107.0   # 回到上边直道，轻微左转
 
 # 角度→归一化角速度转换（不变）
 def python_angle_to_angular_z(python_angle):
@@ -54,8 +54,8 @@ def python_angle_to_angular_z(python_angle):
 class ServoPID:
     def __init__(self):
         self.lidar_angle = 0.0  
-        self.P = 0.40     #0.40         
-        self.D = 0.20    #0.20       
+        self.P = 0.55     #0.40         
+        self.D = 0.25    #0.20     0.30  
         self.I = 0.0
         self.angle_integral_error = 0.0
         self.integral_limit = 100.0
@@ -87,7 +87,7 @@ class LidarCoordinateControlNode(Node):
         # 1速度参数配置（不变）
         self.default_linear_speed = 0.42
         self.special_linear_speed1 = 0.42
-        self.special_angular_speed1 = 104.0
+        self.special_angular_speed1 = 105.0
         self.special_angular_speed3 = 110.0            #原本注释了，值是96.5
         self.special_linear_speed5 = 0.36
         self.special_angular_speed5 = 110.0           #99.8
